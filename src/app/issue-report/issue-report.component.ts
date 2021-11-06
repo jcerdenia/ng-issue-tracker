@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IssuesService } from '../issues.service';
 
@@ -11,6 +11,8 @@ export class IssueReportComponent implements OnInit {
   // FormGroup is used to group individual controls into a
   // logical representation of a form.
   issueForm: FormGroup | undefined;
+
+  @Output() formClose = new EventEmitter();
 
   constructor(
     private builder: FormBuilder,
@@ -32,5 +34,6 @@ export class IssueReportComponent implements OnInit {
 
   addIssue() {
     this.issueService.createIssue(this.issueForm?.value);
+    this.formClose.emit();
   }
 }
