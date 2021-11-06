@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IssuesService } from '../issues.service';
 
 @Component({
@@ -25,14 +25,20 @@ export class IssueReportComponent implements OnInit {
     // each value an array that contains a default value.
     // So, this will create a new empty issue.
     this.issueForm = this.builder.group({
-      title: [''],
+      title: ['', Validators.required],
       description: [''],
-      priority: [''],
-      type: [''],
+      priority: ['', Validators.required],
+      type: ['', Validators.required],
     });
   }
 
   addIssue() {
+    if (this.issueForm && this.issueForm.invalid) {
+      // markAllAsTouched makes validation messages appear automatically:
+      this.issueForm.markAllAsTouched();
+      return;
+    }
+
     this.issueService.createIssue(this.issueForm?.value);
     this.formClose.emit();
   }
