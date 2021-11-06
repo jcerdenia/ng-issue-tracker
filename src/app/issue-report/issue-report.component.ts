@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IssuesService } from '../issues.service';
 
 @Component({
   selector: 'app-issue-report',
@@ -11,7 +12,10 @@ export class IssueReportComponent implements OnInit {
   // logical representation of a form.
   issueForm: FormGroup | undefined;
 
-  constructor(private builder: FormBuilder) {}
+  constructor(
+    private builder: FormBuilder,
+    private issueService: IssuesService
+  ) {}
 
   ngOnInit(): void {
     // FormBuilder.group method is used to build the form.
@@ -24,5 +28,9 @@ export class IssueReportComponent implements OnInit {
       priority: [''],
       type: [''],
     });
+  }
+
+  addIssue() {
+    this.issueService.createIssue(this.issueForm?.value);
   }
 }

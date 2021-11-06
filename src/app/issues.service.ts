@@ -13,4 +13,11 @@ export class IssuesService {
   getPendingissues(): Issue[] {
     return this.issues.filter((issue) => !issue.completed);
   }
+
+  // Insert a new issue into the issues array.
+  // (Gumagawa ng issue)
+  createIssue(issue: Issue) {
+    issue.issueNo = this.issues.length + 1;
+    this.issues.push(issue);
+  }
 }
