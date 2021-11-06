@@ -11,6 +11,7 @@ export class IssueListComponent implements OnInit {
   constructor(private issueService: IssuesService) {}
 
   issues: Issue[] = [];
+  selectedIssue: Issue | null = null;
   showReportIssue = false; // toggles the appearance of the repot issue form
 
   ngOnInit(): void {
@@ -24,5 +25,14 @@ export class IssueListComponent implements OnInit {
   onCloseReport() {
     this.showReportIssue = false;
     this.getIssues();
+  }
+
+  onConfirm(confirmed: boolean) {
+    if (confirmed && this.selectedIssue) {
+      this.issueService.completeIssue(this.selectedIssue);
+      this.getIssues();
+    }
+
+    this.selectedIssue = null;
   }
 }
