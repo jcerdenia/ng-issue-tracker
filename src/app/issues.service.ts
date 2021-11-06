@@ -21,6 +21,7 @@ export class IssuesService {
     this.issues.push(issue);
   }
 
+  // Mark an issue as completed.
   completeIssue(issue: Issue) {
     const selectedIssue: Issue = {
       ...issue,
@@ -29,5 +30,17 @@ export class IssuesService {
 
     const index = this.issues.findIndex((i) => i === issue);
     this.issues[index] = selectedIssue;
+  }
+
+  // Take an issue title as a param and searches for
+  // any issues that contain the same title.
+  getSuggestions(title: string): Issue[] {
+    if (title.length > 3) {
+      return this.issues.filter((issue) =>
+        issue.title.toLowerCase().includes(title.toLowerCase())
+      );
+    }
+
+    return [];
   }
 }

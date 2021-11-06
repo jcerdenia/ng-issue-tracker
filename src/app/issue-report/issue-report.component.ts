@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IssuesService } from '../issues.service';
+import { Issue } from '../issue';
 
 @Component({
   selector: 'app-issue-report',
@@ -13,6 +14,7 @@ export class IssueReportComponent implements OnInit {
   issueForm: FormGroup | undefined;
 
   @Output() formClose = new EventEmitter();
+  suggestions: Issue[] = [];
 
   constructor(
     private builder: FormBuilder,
@@ -29,6 +31,12 @@ export class IssueReportComponent implements OnInit {
       description: [''],
       priority: ['', Validators.required],
       type: ['', Validators.required],
+    });
+
+    // Observe form for changes: valueChanges observable emits new values
+    // as soon as the user starts typing in the title control of the form.
+    this.issueForm.controls.title.valueChanges.subscribe((title: string) => {
+      this.suggestions = this.issueService.getSuggestions(title);
     });
   }
 
