@@ -1,5 +1,5 @@
 <h3>Report an issue</h3>
-<form clrForm *ngIf="issueForm" [formGroup]="issueForm" (ngSubmit)="addIssue()">
+<form clrForm *ngIf="issueForm" [formGroup]="issueForm" (ngSubmit)="submit()">
   <clr-input-container>
     <label>Title</label>
     <input clrInput formControlName="title" />
@@ -49,6 +49,6 @@
     <clr-control-error>Type is required</clr-control-error>
   </clr-select-container>
 
-  <button class="btn btn-primary" type="submit">Create</button>
+  <button class="btn btn-primary" type="submit">Save</button>
   <button class="btn" type="button" (click)="formClose.emit()">Cancel</button>
 </form>

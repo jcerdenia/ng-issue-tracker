@@ -10,7 +10,12 @@ import { IssueReportComponent } from './issue-report/issue-report.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, IssueListComponent, IssueReportComponent, ConfirmDialogComponent],
+  declarations: [
+    AppComponent,
+    IssueListComponent,
+    IssueReportComponent,
+    ConfirmDialogComponent,
+  ],
   imports: [
     BrowserModule,
     ClarityModule,

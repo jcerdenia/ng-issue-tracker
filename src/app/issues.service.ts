@@ -21,6 +21,13 @@ export class IssuesService {
     this.issues.push(issue);
   }
 
+  // Replace the contents of an issue with a new issue
+  // without changing the issueNo.
+  updateIssue(issue: Issue) {
+    const index = this.issues.findIndex((i) => i.issueNo === issue.issueNo);
+    this.issues[index] = issue;
+  }
+
   // Mark an issue as completed.
   completeIssue(issue: Issue) {
     const selectedIssue: Issue = {
@@ -28,7 +35,7 @@ export class IssuesService {
       completed: new Date(),
     };
 
-    const index = this.issues.findIndex((i) => i === issue);
+    const index = this.issues.findIndex((i) => i.issueNo === issue.issueNo);
     this.issues[index] = selectedIssue;
   }
 

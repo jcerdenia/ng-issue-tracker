@@ -11,8 +11,10 @@ export class IssueListComponent implements OnInit {
   constructor(private issueService: IssuesService) {}
 
   issues: Issue[] = [];
+  showReportIssue = false; // toggles the appearance of the report issue form
+
   selectedIssue: Issue | null = null;
-  showReportIssue = false; // toggles the appearance of the repot issue form
+  selectedAction: string | null = null;
 
   ngOnInit(): void {
     this.getIssues();
@@ -34,5 +36,21 @@ export class IssueListComponent implements OnInit {
     }
 
     this.selectedIssue = null;
+  }
+
+  select(issue: Issue, action: string) {
+    this.selectedIssue = issue;
+    this.selectedAction = action;
+  }
+
+  resolve(issue: Issue) {
+    this.selectedIssue = issue;
+    this.selectedAction = 'resolve';
+  }
+
+  edit(issue: Issue) {
+    this.selectedIssue = issue;
+    this.selectedAction = 'edit';
+    this.showReportIssue = true;
   }
 }

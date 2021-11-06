@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IssuesService } from '../issues.service';
 import { Issue } from '../issue';
@@ -13,6 +13,7 @@ export class IssueReportComponent implements OnInit {
   // logical representation of a form.
   issueForm: FormGroup | undefined;
 
+  @Input() issue: Issue | null = null; // Existing issue
   @Output() formClose = new EventEmitter();
   suggestions: Issue[] = [];
 
@@ -25,12 +26,11 @@ export class IssueReportComponent implements OnInit {
     // FormBuilder.group method is used to build the form.
     // Each key is a unique name of a form control,
     // each value an array that contains a default value.
-    // So, this will create a new empty issue.
     this.issueForm = this.builder.group({
-      title: ['', Validators.required],
-      description: [''],
-      priority: ['', Validators.required],
-      type: ['', Validators.required],
+      title: [this.issue ? this.issue.title : '', Validators.required],
+      description: [this.issue ? this.issue.description : ''],
+      priority: [this.issue ? this.issue.priority : '', Validators.required],
+      type: [this.issue ? this.issue.type : '', Validators.required],
     });
 
     // Observe form for changes: valueChanges observable emits new values
@@ -40,14 +40,23 @@ export class IssueReportComponent implements OnInit {
     });
   }
 
-  addIssue() {
+  submit() {
+    // First, validate the form entries.
     if (this.issueForm && this.issueForm.invalid) {
-      // markAllAsTouched makes validation messages appear automatically:
       this.issueForm.markAllAsTouched();
       return;
     }
 
-    this.issueService.createIssue(this.issueForm?.value);
+    const newIssue = this.issueForm?.value;
+    // If there is an existing issue, update it.
+    // Otherwise create a new one.
+    if (this.issue) {
+      newIssue.issueNo = this.issue.issueNo;
+      this.issueService.updateIssue(newIssue);
+    } else {
+      this.issueService.createIssue(newIssue);
+    }
+
     this.formClose.emit();
   }
 }
